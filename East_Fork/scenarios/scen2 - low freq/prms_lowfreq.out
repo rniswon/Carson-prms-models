@@ -1,0 +1,99 @@
+
+
+               Precipitation-Runoff Modeling System (PRMS)
+                    Based on Version 4.0.2 08/15/2016
+
+
+The following PRMS modules are available:
+
+     Process                   Modules
+-------------------------------------------------------------------
+  Basin Definition: basin
+    Cascading Flow: cascade
+  Time Series Data: obs
+   Potet Solar Rad: soltab
+  Temperature Dist: temp_1sta, temp_laps, temp_dist2, climate_hru
+       Precip Dist: precip_1sta, precip_laps, precip_dist2,
+                    climate_hru
+Temp & Precip Dist: xyz_dist, ide_dist
+    Solar Rad Dist: ccsolrad, ddsolrad, climate_hru
+Transpiration Dist: transp_tindex, climate_hru, transp_frost
+      Potential ET: potet_hamon, potet_jh, potet_pan, climate_hru,
+                    potet_hs, potet_pt, potet_pm, potet_pm_sta
+      Interception: intcp
+     Snow Dynamics: snowcomp
+    Surface Runoff: srunoff_smidx, srunoff_carea
+         Soil Zone: soilzone
+       Groundwater: gwflow
+Streamflow Routing: strmflow, strmflow_in_out, muskingum
+    Output Summary: basin_sum, subbasin, map_results, nhru_summary
+     Preprocessing: write_climate_hru, frost_date
+-------------------------------------------------------------------
+
+
+PRMS modules listed in the order in which they are called:
+
+        Process                  Module (source code version)
+====================================================================
+GSFLOW Computation Order         gsflow_prms.f90          2016-09-12    
+Basin Definition                 basin.f90                2016-05-10    
+Cascading Flow                   cascade.f90              2016-07-19    
+Common States and Fluxes         climateflow.f90          2016-07-22    
+Potential Solar Radiation        soltab.f90               2016-15-10    
+PRMS Set Time Variables          prms_time.f90            2015-03-31    
+Time Series Data                 obs.f90                  2016-04-15    
+Temperature Distribution         temp_laps.f90            2016-05-12    
+Precipitation Distribution       precip_1sta.f90          2016-05-10    
+Solar Radiation Distribution     ddsolrad.f90             2015-09-14    
+Transpiration Distribution       transp_tindex.f90        2015-01-06    
+Potential Evapotranspiration     potet_jh.f90             2016-05-10    
+Canopy Interception              intcp.f90                2016-07-06    
+Snow Dynamics                    snowcomp.f90             2016-06-16    
+Surface Runoff                   srunoff_smidx.f90        2016-06-16    
+Soil Zone Computations           soilzone.f90             2016-07-18    
+Groundwater                      gwflow.f90               2016-06-01    
+Streamflow Routing               strmflow.f90             2014-12-02    
+Summary                          basin_sum.f90            2016-06-16    
+Output Summary                   map_results.f90          2016-05-12    
+Output Summary                   subbasin.f90             2016-03-23    
+====================================================================
+
+
+ Surface Water and Energy Budgets Simulated by Version 4.0.2 08/15/2016
+ Start time: 2053/10/01 00:00:00
+ End time:   2076/09/29 00:00:00
+ Sum of HRU areas:   500305.54; Active basin area:   228756.94
+ Fraction impervious:   0.0017; Fraction pervious:      0.9983
+
+
+
+
+   Year Month Day   Precip     ET    Storage S-Runoff M-Runoff
+                  (inches) (inches) (inches) (inches) (inches)
+ -------------------------------------------------------------
+ initial                               0.144
+   2054             42.868   27.252    0.373   15.387    0.038
+   2055             42.868   27.247    0.374   15.620    0.038
+   2056             42.867   27.243    0.368   15.630    0.038
+   2057             42.868   27.590    0.384   15.262    0.038
+   2058             55.461   29.753    0.384   25.707    0.038
+   2059             57.611   31.593    0.526   25.877    0.038
+   2060             23.449   19.604    0.231    4.140    0.038
+   2061             33.188   23.994    0.513    8.912    0.038
+   2062             35.298   25.028    0.269   10.514    0.038
+   2063             21.017   18.014    0.160    3.113    0.038
+   2064             42.017   28.988    1.342   11.846    0.038
+   2065             41.148   27.762    0.302   14.426    0.038
+   2066             40.915   27.189    0.350   13.678    0.038
+   2067             22.986   19.393    0.763    3.180    0.038
+   2068             41.113   26.131    0.414   15.330    0.038
+   2069             26.575   20.231    0.178    6.580    0.038
+   2070             38.279   26.493    0.284   11.680    0.038
+   2071             48.994   30.931    0.447   17.900    0.038
+   2072             44.544   25.317    0.410   19.264    0.038
+   2073             39.305   27.844    0.363   11.508    0.038
+   2074             53.617   29.888    0.396   23.697    0.038
+   2075             36.054   25.274    0.552   10.625    0.038
+ *************************************************************
+ Total for run     914.781  601.772    1.299  311.853    0.874
+ *************************************************************

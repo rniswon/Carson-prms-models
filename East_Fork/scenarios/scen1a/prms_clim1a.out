@@ -1,0 +1,93 @@
+
+
+
+                         U.S. Geological Survey
+               Precipitation-Runoff Modeling System (PRMS)
+              Version 4.0.2 08/15/2016 Tag: 08-15 13:54:00Z          
+
+
+The following modules are available:
+
+     Process                   Modules
+--------------------------------------------------------------------------
+  Basin Definition: basin
+    Cascading Flow: cascade
+  Time Series Data: obs
+   Potet Solar Rad: soltab
+  Temperature Dist: temp_1sta, temp_laps, temp_dist2, climate_hru
+       Precip Dist: precip_1sta, precip_laps, precip_dist2,
+                    climate_hru
+Temp & Precip Dist: xyz_dist, ide_dist
+    Solar Rad Dist: ccsolrad, ddsolrad, climate_hru
+Transpiration Dist: transp_tindex, climate_hru, transp_frost
+      Potential ET: potet_hamon, potet_jh, potet_pan, climate_hru,
+                    potet_hs, potet_pt, potet_pm
+      Interception: intcp
+     Snow Dynamics: snowcomp
+    Surface Runoff: srunoff_smidx, srunoff_carea
+         Soil Zone: soilzone
+       Groundwater: gwflow
+Streamflow Routing: strmflow, strmflow_in_out, muskingum, strmflow_lake
+    Output Summary: basin_sum, subbasin, map_results, prms_summary,
+                    nhru_summary, water_balance
+     Preprocessing: write_climate_hru, frost_date
+--------------------------------------------------------------------------
+
+
+Active modules listed in the order in which they are called:
+
+        Process                       Module            Version Date
+====================================================================
+Computation Order                call_modules.f90         2016-08-15    
+Basin Definition                 basin.f90                2016-05-10    
+Cascading Flow                   cascade.f90              2016-07-19    
+Common States and Fluxes         climateflow.f90          2016-07-22    
+Potential Solar Radiation        soltab.f90               2016-15-10    
+PRMS Set Time Variables          prms_time.f90            2015-03-31    
+Time Series Data                 obs.f90                  2016-04-15    
+Temperature Distribution         temp_laps.f90            2016-05-12    
+Precipitation Distribution       precip_1sta.f90          2016-05-10    
+Solar Radiation Distribution     ddsolrad.f90             2015-09-14    
+Transpiration Distribution       transp_tindex.f90        2015-01-06    
+Potential Evapotranspiration     potet_jh.f90             2016-05-10    
+Canopy Interception              intcp.f90                2016-07-06    
+Snow Dynamics                    snowcomp.f90             2016-06-16    
+Surface Runoff                   srunoff_smidx.f90        2016-06-16    
+Soil Zone Computations           soilzone.f90             2016-07-18    
+Groundwater                      gwflow.f90               2016-06-01    
+Streamflow Routing               strmflow.f90             2014-12-02    
+Summary                          basin_sum.f90            2016-06-16    
+Output Summary                   subbasin.f90             2016-07-11    
+====================================================================
+
+
+ Start time: 2008/10/01 00:00:00
+ End time:   2024/09/29 00:00:00
+ Sum of HRU areas:   500305.54; Active basin area:   228756.94
+ Fraction impervious:   0.0017; Fraction pervious:      0.9983
+
+
+
+
+   Year Month Day   Precip     ET    Storage S-Runoff M-Runoff
+                  (inches) (inches) (inches) (inches) (inches)
+ -------------------------------------------------------------
+ initial                               0.144
+   2009             36.510   25.708    0.450   10.497    2.955
+   2010             37.994   26.514    0.687   11.242    3.563
+   2011             59.436   33.655    2.133   24.335    6.281
+   2012             22.173   19.405    0.254    4.648    2.180
+   2013             25.998   20.852    0.315    5.084    2.501
+   2014             27.317   22.271    1.055    4.306    1.598
+   2015             22.923   21.239    0.282    2.457    1.158
+   2016             20.843   18.046    0.181    2.899    1.931
+   2017             25.593   20.721    0.381    4.672    1.532
+   2018             39.998   26.003    2.107   12.269    3.328
+   2019             27.559   23.667    0.849    5.150    1.894
+   2020             29.116   22.540    0.845    6.580    2.071
+   2021             26.917   21.980    0.476    5.306    1.491
+   2022             49.493   28.854    0.618   20.497    4.930
+   2023             25.137   20.788    0.524    4.444    1.490
+ *************************************************************
+ Total for run     544.117  384.856    2.287  157.118   47.341
+ *************************************************************
