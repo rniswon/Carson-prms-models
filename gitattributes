@@ -1,0 +1,2 @@
+*.tpl filter=lfs diff=lfs merge=lfs -text   
+*.param filter=lfs diff=lfs merge=lfs -text 
