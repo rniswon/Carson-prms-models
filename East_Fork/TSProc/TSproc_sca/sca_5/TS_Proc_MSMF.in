@@ -1,0 +1,2739 @@
+START SETTINGS
+ CONTEXT model_run
+#CONTEXT pest_prep
+ DATE_FORMAT mm/dd/yyyy
+END SETTINGS
+#
+#**************************************
+#The order of processing is as follows:
+#  1) Div1_After_Ghst_Nd.txt
+#  2) Div1_Seg1_End.txt
+#  3) Div1_Seg1_Start.txt
+#  4) Div1_Seg4_End.txt
+#  5) Div2_After_Ghst_Nd.txt
+#  6) Div2_Seg1_End.txt
+#  7) Div2_Seg1_Start.txt
+#  8) Div2_Seg4_End.txt
+#  9) Div3_After_Ghst_Nd.txt
+# 10) Div3_Seg1_End.txt
+# 11) Div3_Seg1_Start.txt
+# 12) Div3_Seg4_End.txt
+# 13) Div4_After_Ghst_Nd.txt
+# 14) Div4_Seg1_End.txt
+# 15) Div4_Seg1_Start.txt
+# 16) Div4_Seg4_End.txt
+# 17) Drain_1.txt
+# 18) Drain_2.txt
+# 19) Drain_3.txt
+# 20) Reservoir_stage.txt
+# 21) Res_Release_Pt.txt
+# 22) Riv_After_Ag1_Div.txt
+# 23) Riv_After_Ag2_Div.txt
+# 24) Riv_After_Ag3_Div.txt
+# 25) Riv_After_Ag4_Div.txt
+# 26) Riv_After_Confl_Ag3Retrn.txt
+# 27) Riv_After_Confl_Drn1.txt
+# 28) Riv_After_Confl_Drn2.txt
+# 29) Riv_After_Confl_Drn3.txt
+# 30) Riv_After_Confl_wTrib.txt
+# 31) Riv_Before_Ag2_Div.txt
+# 32) Riv_Before_Ag3_Div.txt
+# 33) Riv_Before_Ag4_Div.txt
+# 34) Riv_Before_Confl_Drn1.txt
+# 35) Riv_Before_Confl_Drn2.txt
+# 36) Riv_Model_Exit.txt
+# 37) Spillway.txt
+# 38) Trib_before_conflnce.txt
+#***********************************
+# 
+####################################################################
+# 1) "Div1_After_Ghst_Nd.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div1_After_Ghst_Nd.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv1_aft_ghst
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv1_aft_ghst
+ NEW_V_TABLE_NAME Dv1AftGhst_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv1_aft_ghst
+ NEW_V_TABLE_NAME Dv1AftGhst_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv1AGst_Ann
+ V_TABLE_NAME Dv1AftGhst_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv1AGst_Mon
+ V_TABLE_NAME Dv1AftGhst_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+####################################################################
+# 2) "Div1_Seg1_End.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div1_Seg1_End.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv1_EndSg1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv1_EndSg1
+ NEW_V_TABLE_NAME Dv1_E_Sg1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv1_EndSg1
+ NEW_V_TABLE_NAME Dv1_E_Sg1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv1ASg1_Ann
+ V_TABLE_NAME Dv1_E_Sg1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv1ASg1_Mon
+ V_TABLE_NAME Dv1_E_Sg1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv1_EndSg1_raw
+ EQUATION Dv1_EndSg1 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 3) "Div1_Seg1_Start.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div1_Seg1_Start.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv1_BegSg1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv1_BegSg1
+ NEW_V_TABLE_NAME Dv1_B_Sg1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv1_BegSg1
+ NEW_V_TABLE_NAME Dv1_B_Sg1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv1BSg1_Ann
+ V_TABLE_NAME Dv1_B_Sg1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv1BSg1_Mon
+ V_TABLE_NAME Dv1_B_Sg1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv1_Seg1_Strt_raw
+ EQUATION Dv1_BegSg1 * 35.315 / 86400
+END SERIES_EQUATION
+
+
+####################################################################
+# 4) "Div1_Seg4_End.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div1_Seg4_End.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv1_EndSg4
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv1_EndSg4
+ NEW_V_TABLE_NAME Dv1_E_Sg4_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv1_EndSg4
+ NEW_V_TABLE_NAME Dv1_E_Sg4_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv1ESg4_Ann
+ V_TABLE_NAME Dv1_E_Sg4_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv1ESg4_Mon
+ V_TABLE_NAME Dv1_E_Sg4_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv1_EndSg4_raw
+ EQUATION Dv1_EndSg4 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 5) "Div2_After_Ghst_Nd.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div2_After_Ghst_Nd.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv2_aft_ghst
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv2_aft_ghst
+ NEW_V_TABLE_NAME Dv2AftGhst_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv2_aft_ghst
+ NEW_V_TABLE_NAME Dv2AftGhst_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv2AGst_Ann
+ V_TABLE_NAME Dv2AftGhst_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv2AGst_Mon
+ V_TABLE_NAME Dv2AftGhst_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+####################################################################
+# 6) "Div2_Seg1_End.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div2_Seg1_End.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv2_EndSg1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv2_EndSg1
+ NEW_V_TABLE_NAME Dv2_E_Sg1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv2_EndSg1
+ NEW_V_TABLE_NAME Dv2_E_Sg1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv2ASg1_Ann
+ V_TABLE_NAME Dv2_E_Sg1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv2ASg1_Mon
+ V_TABLE_NAME Dv2_E_Sg1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv2_EndSg1_raw
+ EQUATION Dv2_EndSg1 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 7) "Div2_Seg1_Start.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div2_Seg1_Start.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv2_BegSg1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv2_BegSg1
+ NEW_V_TABLE_NAME Dv2_B_Sg1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv2_BegSg1
+ NEW_V_TABLE_NAME Dv2_B_Sg1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv2BSg1_Ann
+ V_TABLE_NAME Dv2_B_Sg1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv2BSg1_Mon
+ V_TABLE_NAME Dv2_B_Sg1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv2_BegSg1_raw
+ EQUATION Dv2_BegSg1 * 35.315 / 86400
+END SERIES_EQUATION
+
+
+####################################################################
+# 8) "Div2_Seg4_End.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div2_Seg4_End.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv2_EndSg4
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv2_EndSg4
+ NEW_V_TABLE_NAME Dv2_E_Sg4_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv2_EndSg4
+ NEW_V_TABLE_NAME Dv2_E_Sg4_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv2ESg4_Ann
+ V_TABLE_NAME Dv2_E_Sg4_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv2ESg4_Mon
+ V_TABLE_NAME Dv2_E_Sg4_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv2_EndSg4_raw
+ EQUATION Dv2_EndSg4 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 9) "Div3_After_Ghst_Nd.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div3_After_Ghst_Nd.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv3_aft_ghst
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv3_aft_ghst
+ NEW_V_TABLE_NAME Dv3AftGhst_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv3_aft_ghst
+ NEW_V_TABLE_NAME Dv3AftGhst_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv3AGst_Ann
+ V_TABLE_NAME Dv3AftGhst_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv3AGst_Mon
+ V_TABLE_NAME Dv3AftGhst_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+####################################################################
+# 10) "Div3_Seg1_End.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div3_Seg1_End.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv3_EndSg1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv3_EndSg1
+ NEW_V_TABLE_NAME Dv3_E_Sg1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv3_EndSg1
+ NEW_V_TABLE_NAME Dv3_E_Sg1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv3ASg1_Ann
+ V_TABLE_NAME Dv3_E_Sg1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv3ASg1_Mon
+ V_TABLE_NAME Dv3_E_Sg1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv3_EndSg1_raw
+ EQUATION Dv3_EndSg1 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 11) "Div3_Seg1_Start.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div3_Seg1_Start.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv3_BegSg1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv3_BegSg1
+ NEW_V_TABLE_NAME Dv3_B_Sg1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv3_BegSg1
+ NEW_V_TABLE_NAME Dv3_B_Sg1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv3BSg1_Ann
+ V_TABLE_NAME Dv3_B_Sg1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv3BSg1_Mon
+ V_TABLE_NAME Dv3_B_Sg1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv3_BegSg1_raw
+ EQUATION Dv3_BegSg1 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 12) "Div3_Seg4_End.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div3_Seg4_End.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv3_EndSg4
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv3_EndSg4
+ NEW_V_TABLE_NAME Dv3_E_Sg4_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv3_EndSg4
+ NEW_V_TABLE_NAME Dv3_E_Sg4_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv3ESg4_Ann
+ V_TABLE_NAME Dv3_E_Sg4_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv3ESg4_Mon
+ V_TABLE_NAME Dv3_E_Sg4_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv3_EndSg4_raw
+ EQUATION Dv3_EndSg4 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 13) "Div4_After_Ghst_Nd.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div4_After_Ghst_Nd.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv4_aft_ghst
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv4_aft_ghst
+ NEW_V_TABLE_NAME Dv4AftGhst_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv4_aft_ghst
+ NEW_V_TABLE_NAME Dv4AftGhst_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv4AGst_Ann
+ V_TABLE_NAME Dv4AftGhst_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv4AGst_Mon
+ V_TABLE_NAME Dv4AftGhst_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+####################################################################
+# 14) "Div4_Seg1_End.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div4_Seg1_End.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv4_EndSg1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv4_EndSg1
+ NEW_V_TABLE_NAME Dv4_E_Sg1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv4_EndSg1
+ NEW_V_TABLE_NAME Dv4_E_Sg1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv4ASg1_Ann
+ V_TABLE_NAME Dv4_E_Sg1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv4ASg1_Mon
+ V_TABLE_NAME Dv4_E_Sg1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv4_EndSg1_raw
+ EQUATION Dv4_EndSg1 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 15) "Div4_Seg1_Start.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div4_Seg1_Start.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv4_BegSg1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv4_BegSg1
+ NEW_V_TABLE_NAME Dv4_B_Sg1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv4_BegSg1
+ NEW_V_TABLE_NAME Dv4_B_Sg1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv4BSg1_Ann
+ V_TABLE_NAME Dv4_B_Sg1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv4BSg1_Mon
+ V_TABLE_NAME Dv4_B_Sg1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv4_BegSg1_raw
+ EQUATION Dv4_BegSg1 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 16) "Div4_Seg4_End.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Div4_Seg4_End.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Dv4_EndSg4
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv4_EndSg4
+ NEW_V_TABLE_NAME Dv4_E_Sg4_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv4_EndSg4
+ NEW_V_TABLE_NAME Dv4_E_Sg4_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv4ESg4_Ann
+ V_TABLE_NAME Dv4_E_Sg4_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Dv4ESg4_Mon
+ V_TABLE_NAME Dv4_E_Sg4_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Dv4_EndSg4_raw
+ EQUATION Dv4_EndSg4 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 17) "Drain_1.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Drain_1.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Drn1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Drn1
+ NEW_V_TABLE_NAME Drn1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Drn1
+ NEW_V_TABLE_NAME Drn1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Drn1_Ann
+ V_TABLE_NAME Drn1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Drn1_Mon
+ V_TABLE_NAME Drn1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Drn1_raw
+ EQUATION Drn1 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 18) "Drain_2.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Drain_2.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Drn2
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Drn2
+ NEW_V_TABLE_NAME Drn2_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Drn2
+ NEW_V_TABLE_NAME Drn2_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Drn2_Ann
+ V_TABLE_NAME Drn2_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Drn2_Mon
+ V_TABLE_NAME Drn2_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Drn2_raw
+ EQUATION Drn2 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 19) "Drain_3.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Drain_3.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Drn3
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Drn3
+ NEW_V_TABLE_NAME Drn3_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Drn3
+ NEW_V_TABLE_NAME Drn3_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Drn3_Ann
+ V_TABLE_NAME Drn3_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Drn3_Mon
+ V_TABLE_NAME Drn3_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Drn3_raw
+ EQUATION Drn3 * 35.315 / 86400
+END SERIES_EQUATION
+
+#############################################################################
+# 20) "Reservoir_Stage.txt" - Reservoir volume, evaportation, gw In, & gw Out
+#############################################################################
+
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Reservoir_stage.txt
+ DATA_TYPE Volume                  #Read in reservoir volume
+ NEW_SERIES_NAME res_vol
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Reservoir_stage.txt
+ DATA_TYPE Evap.                  #Read in reservoir evaporation
+ NEW_SERIES_NAME res_evap
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Reservoir_stage.txt
+ DATA_TYPE GW-Inflw               #Read in reservoir groundwater inflow
+ NEW_SERIES_NAME res_gwin
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Reservoir_stage.txt
+ DATA_TYPE GW-Outflw              #Read in reservoir groundwater outflow
+ NEW_SERIES_NAME res_gwout
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+####### Start Reservoir Volume Analysis #######
+
+START PERIOD_STATISTICS
+ CONTEXT all
+ SERIES_NAME res_vol
+ NEW_SERIES_NAME resvol_mnmon
+ STATISTIC mean
+ PERIOD month_one
+ YEAR_TYPE water_high
+ TIME_ABSCISSA center
+END PERIOD_STATISTICS
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RsVlAF_mnmon
+ EQUATION 8.107176e-04 * resvol_mnmon
+END SERIES_EQUATION
+
+START PERIOD_STATISTICS
+ CONTEXT all
+ SERIES_NAME res_vol
+ NEW_SERIES_NAME resvol_monmn
+ STATISTIC mean
+ PERIOD month_many
+ YEAR_TYPE water_high
+ TIME_ABSCISSA center
+END PERIOD_STATISTICS
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RsVAF_monmn
+ EQUATION 8.107176e-04 * resvol_monmn
+END SERIES_EQUATION
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME ResVol_acft_raw
+ EQUATION res_vol * 35.315 / 43560.17
+END SERIES_EQUATION
+
+####### End Reservoir Volume Analysis #######
+
+####### Start Reservoir Evaporation Analysis #######
+
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME res_evap
+ NEW_V_TABLE_NAME res_EVP_tot
+ FLOW_TIME_UNITS days
+ DATE_FILE "Simulation_Accumulation.dat"
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME ResEvapTot
+ V_TABLE_NAME res_EVP_tot
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START PERIOD_STATISTICS
+ CONTEXT all
+ SERIES_NAME res_evap
+ NEW_SERIES_NAME rsevp_mnmon
+ STATISTIC mean
+ PERIOD month_one
+ YEAR_TYPE water_high
+ TIME_ABSCISSA center
+END PERIOD_STATISTICS
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RsEAF_mnmon
+ EQUATION 8.107176e-04 * rsevp_mnmon
+END SERIES_EQUATION
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME ResEvap_acft_raw
+ EQUATION res_evap * 35.315 / 43560.17
+END SERIES_EQUATION
+
+####### End Reservoir Evaporation Analysis #######
+
+####### Start Reservoir Groundwater Inflow Analysis #######
+
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME res_gwin
+ NEW_V_TABLE_NAME res_gwin_tot
+ FLOW_TIME_UNITS days
+ DATE_FILE "Simulation_Accumulation.dat"
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME ResgwinTot
+ V_TABLE_NAME res_gwin_tot
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START PERIOD_STATISTICS
+ CONTEXT all
+ SERIES_NAME res_gwin
+ NEW_SERIES_NAME rsgwi_mnmon
+ STATISTIC mean
+ PERIOD month_one
+ YEAR_TYPE water_high
+ TIME_ABSCISSA center
+END PERIOD_STATISTICS
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RsgiAFmnmon
+ EQUATION 8.107176e-04 * rsgwi_mnmon
+END SERIES_EQUATION
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME res_gwin_acft_raw
+ EQUATION res_gwin * 35.315 / 43560.17
+END SERIES_EQUATION
+
+####### End Reservoir Groundwater Inflow Analysis #######
+
+####### Start Reservoir Groundwater Outflow Analysis #######
+
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME res_gwout
+ NEW_V_TABLE_NAME res_gwout_tot
+ FLOW_TIME_UNITS days
+ DATE_FILE "Simulation_Accumulation.dat"
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME ResgwoutTot
+ V_TABLE_NAME res_gwout_tot
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START PERIOD_STATISTICS
+ CONTEXT all
+ SERIES_NAME res_gwout
+ NEW_SERIES_NAME rsgwo_mnmon
+ STATISTIC mean
+ PERIOD month_one
+ YEAR_TYPE water_high
+ TIME_ABSCISSA center
+END PERIOD_STATISTICS
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RsgoAFmnmon
+ EQUATION 8.107176e-04 * rsgwo_mnmon
+END SERIES_EQUATION
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME res_gwout_acft_raw
+ EQUATION res_gwout * 35.315 / 43560.17
+END SERIES_EQUATION
+
+####### End Reservoir Groundwater Outflow Analysis #######
+
+#############################################################################
+# 21) "Res_Release_Pt.txt"
+#############################################################################
+
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Res_Release_Pt.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Res_Rels
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+# Add keyword "CUMULATIVE" on line after "FACTOR" line to accumulate volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Res_Rels
+ NEW_V_TABLE_NAME Res_Rels_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Dv1_aft_ghst
+ NEW_V_TABLE_NAME Res_Rels_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Res_Rls_Ann
+ V_TABLE_NAME Res_Rels_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Res_Rls_Mon
+ V_TABLE_NAME Res_Rels_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Res_Rels_cfs_raw
+ EQUATION Res_Rels * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 22) "Riv_After_Ag1_Div.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_After_Ag1_Div.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Rv_aft_Dv1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Dv1
+ NEW_V_TABLE_NAME RvaftDv1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Dv1
+ NEW_V_TABLE_NAME RvaftDv1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvafDv1_Ann
+ V_TABLE_NAME RvaftDv1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvafDv1_Mon
+ V_TABLE_NAME RvaftDv1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RvAft_Dv1_cfs_raw
+ EQUATION Rv_aft_Dv1 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 23) "Riv_After_Ag2_Div.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_After_Ag2_Div.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Rv_aft_Dv2
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Dv2
+ NEW_V_TABLE_NAME RvaftDv2_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Dv2
+ NEW_V_TABLE_NAME RvaftDv2_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvafDv2_Ann
+ V_TABLE_NAME RvaftDv2_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvafDv2_Mon
+ V_TABLE_NAME RvaftDv2_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RvAft_Dv2_cfs_raw
+ EQUATION Rv_aft_Dv2 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 24) "Riv_After_Ag3_Div.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_After_Ag3_Div.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Rv_aft_Dv3
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Dv3
+ NEW_V_TABLE_NAME RvaftDv3_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Dv3
+ NEW_V_TABLE_NAME RvaftDv3_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvafDv3_Ann
+ V_TABLE_NAME RvaftDv3_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvafDv3_Mon
+ V_TABLE_NAME RvaftDv3_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RvAft_Dv3_cfs_raw
+ EQUATION Rv_aft_Dv3 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 25) "Riv_After_Ag4_Div.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_After_Ag4_Div.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Rv_aft_Dv4
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Dv4
+ NEW_V_TABLE_NAME RvaftDv4_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Dv4
+ NEW_V_TABLE_NAME RvaftDv4_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvafDv4_Ann
+ V_TABLE_NAME RvaftDv4_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvafDv4_Mon
+ V_TABLE_NAME RvaftDv4_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RvAft_Dv4_cfs_raw
+ EQUATION Rv_aft_Dv4 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 26) "Riv_After_Confl_Ag3Retrn.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_After_Confl_Ag3Retrn.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Rv_aft_Dv3Rtn
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Dv3Rtn
+ NEW_V_TABLE_NAME RvaftDv3Rtn_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Dv3Rtn
+ NEW_V_TABLE_NAME RvaftDv3Rtn_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvAD3Rt_Ann
+ V_TABLE_NAME RvaftDv3Rtn_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvAD3Rt_Mon
+ V_TABLE_NAME RvaftDv3Rtn_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RvAft_D3Rt_cfs_raw
+ EQUATION Rv_aft_Dv3Rtn * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 27) "Riv_After_Confl_Drn1.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_After_Confl_Drn1.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Rv_aft_Cnf1_Drn
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Cnf1_Drn
+ NEW_V_TABLE_NAME RvaftDrnCn1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Cnf1_Drn
+ NEW_V_TABLE_NAME RvaftDrnCn1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvAD1Cn_Ann
+ V_TABLE_NAME RvaftDrnCn1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvAD1Cn_Mon
+ V_TABLE_NAME RvaftDrnCn1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RvAf_CDr1_cfs_raw
+ EQUATION Rv_aft_Cnf1_Drn * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 28) "Riv_After_Confl_Drn2.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_After_Confl_Drn2.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Rv_aft_Cnf2_Drn
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Cnf2_Drn
+ NEW_V_TABLE_NAME RvaftDrnCn2_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Cnf2_Drn
+ NEW_V_TABLE_NAME RvaftDrnCn2_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvAD2Cn_Ann
+ V_TABLE_NAME RvaftDrnCn2_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvAD2Cn_Mon
+ V_TABLE_NAME RvaftDrnCn2_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RvAf_CDr2_cfs_raw
+ EQUATION Rv_aft_Cnf2_Drn * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 29) "Riv_After_Confl_Drn3.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_After_Confl_Drn3.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Rv_aft_Cnf3_Drn
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Cnf3_Drn
+ NEW_V_TABLE_NAME RvaftDrnCn3_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Cnf3_Drn
+ NEW_V_TABLE_NAME RvaftDrnCn3_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvAD3Cn_Ann
+ V_TABLE_NAME RvaftDrnCn3_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvAD3Cn_Mon
+ V_TABLE_NAME RvaftDrnCn3_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RvAf_CDr3_cfs_raw
+ EQUATION Rv_aft_Cnf3_Drn * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 30) "Riv_After_Confl_wTrib.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_After_Confl_wTrib.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Rv_aft_Cnf_Trb
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Cnf_Trb
+ NEW_V_TABLE_NAME RvaftCnTrb_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Rv_aft_Cnf_Trb
+ NEW_V_TABLE_NAME RvaftCnTrb_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvACnTr_Ann
+ V_TABLE_NAME RvaftCnTrb_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvACnTr_Mon
+ V_TABLE_NAME RvaftCnTrb_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME RvAf_CTrb_cfs_raw
+ EQUATION Rv_aft_Cnf_Trb * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 31) "Riv_Before_Ag2_Div.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_Before_Ag2_Div.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Riv_Bfr_Dv2
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Bfr_Dv2
+ NEW_V_TABLE_NAME RivBfrDv2_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Bfr_Dv2
+ NEW_V_TABLE_NAME RivBfrDv2_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvBDv2_Ann
+ V_TABLE_NAME RivBfrDv2_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvBDv2_Mon
+ V_TABLE_NAME RivBfrDv2_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Rv_BfrDv2_cfs_raw
+ EQUATION Riv_Bfr_Dv2 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 32) "Riv_Before_Ag3_Div.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_Before_Ag3_Div.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Riv_Bfr_Dv3
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Bfr_Dv3
+ NEW_V_TABLE_NAME RivBfrDv3_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Bfr_Dv3
+ NEW_V_TABLE_NAME RivBfrDv3_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvBDv3_Ann
+ V_TABLE_NAME RivBfrDv3_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvBDv3_Mon
+ V_TABLE_NAME RivBfrDv3_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Rv_BfrDv3_cfs_raw
+ EQUATION Riv_Bfr_Dv3 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 33) "Riv_Before_Ag4_Div.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_Before_Ag4_Div.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Riv_Bfr_Dv4
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Bfr_Dv4
+ NEW_V_TABLE_NAME RivBfrDv4_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Bfr_Dv4
+ NEW_V_TABLE_NAME RivBfrDv4_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvBDv4_Ann
+ V_TABLE_NAME RivBfrDv4_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvBDv4_Mon
+ V_TABLE_NAME RivBfrDv4_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Rv_BfrDv4_cfs_raw
+ EQUATION Riv_Bfr_Dv4 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 34) "Riv_Before_Confl_Drn1.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_Before_Confl_Drn1.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Riv_Bfr_Cnfl_Dn1
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Bfr_Cnfl_Dn1
+ NEW_V_TABLE_NAME RivBCnDn1_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Bfr_Cnfl_Dn1
+ NEW_V_TABLE_NAME RivBCnDn1_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvBCD1_Ann
+ V_TABLE_NAME RivBCnDn1_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvBCD1_Mon
+ V_TABLE_NAME RivBCnDn1_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Rv_BCfDn1_cfs_raw
+ EQUATION Riv_Bfr_Cnfl_Dn1 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 35) "Riv_Before_Confl_Drn2.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_Before_Confl_Drn2.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Riv_Bfr_Cnfl_Dn2
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Bfr_Cnfl_Dn2
+ NEW_V_TABLE_NAME RivBCnDn2_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Bfr_Cnfl_Dn2
+ NEW_V_TABLE_NAME RivBCnDn2_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvBCD2_Ann
+ V_TABLE_NAME RivBCnDn2_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvBCD2_Mon
+ V_TABLE_NAME RivBCnDn2_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Rv_BCfDn2_cfs_raw
+ EQUATION Riv_Bfr_Cnfl_Dn2 * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 36) "Riv_Model_Exit.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Riv_Model_Exit.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Riv_Mod_Ex
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Mod_Ex
+ NEW_V_TABLE_NAME RivModEx_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Riv_Mod_Ex
+ NEW_V_TABLE_NAME RivModEx_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvMdEx_Ann
+ V_TABLE_NAME RivModEx_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME RvMdEx_Mon
+ V_TABLE_NAME RivModEx_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Rv_Mod_Ex_cfs_raw
+ EQUATION Riv_Mod_Ex * 35.315 / 86400
+END SERIES_EQUATION
+
+####################################################################
+# 37) "Spillway.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Spillway.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Spillway
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Spillway
+ NEW_V_TABLE_NAME Spill_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Spillway
+ NEW_V_TABLE_NAME Spill_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Spill_Ann
+ V_TABLE_NAME Spill_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME Spill_Mon
+ V_TABLE_NAME Spill_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+####################################################################
+# 38) "Trib_before_conflnce.txt"
+####################################################################
+START GET_MUL_SERIES_GSFLOW_GAGE
+ CONTEXT all
+ FILE .\sfr_output\Trib_before_conflnce.txt
+ DATA_TYPE Flow
+ NEW_SERIES_NAME Trb_Bf_Cnfl
+ MODEL_REFERENCE_DATE 09/29/1989
+ MODEL_REFERENCE_TIME 00:00:00
+ TIME_UNITS_PER_DAY  1.0
+ DATE_1 10/01/1989
+ TIME_1 00:00:00
+ DATE_2 09/29/2006
+ TIME_2 23:59:59
+END GET_MUL_SERIES_GSFLOW_GAGE
+
+# Tally up annual volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Trb_Bf_Cnfl
+ NEW_V_TABLE_NAME TrbBfCnfl_AnnVol
+ DATE_FILE "Annual_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #m^3 to acre*ft
+END VOLUME_CALCULATION
+
+# Tally up monthly volumes
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME Trb_Bf_Cnfl
+ NEW_V_TABLE_NAME TrbBfCnfl_MonVol
+ DATE_FILE "Monthly_Accumulation.dat"
+ FLOW_TIME_UNITS day
+ FACTOR 8.107176e-04   #cmd to acre*ft/yr
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME TrbBfCn_Ann
+ V_TABLE_NAME TrbBfCnfl_AnnVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ NEW_SERIES_NAME TrbBfCn_Mon
+ V_TABLE_NAME TrbBfCnfl_MonVol
+ TIME_ABSCISSA center
+END V_TABLE_TO_SERIES
+
+START SERIES_EQUATION
+ CONTEXT all
+ NEW_SERIES_NAME Tb_BfCnfl_cfs_raw
+ EQUATION Trb_Bf_Cnfl * 35.315 / 86400
+END SERIES_EQUATION
+
+##########################################################
+# Write the output to a file for PEST
+##########################################################
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\gage_post_TSProc.flo
+ SERIES_FORMAT long
+ SERIES_NAME Dv1AGst_Ann
+ SERIES_NAME Dv1AGst_Mon
+ SERIES_NAME Dv1ASg1_Ann
+ SERIES_NAME Dv1ASg1_Mon
+ SERIES_NAME Dv1BSg1_Ann
+ SERIES_NAME Dv1BSg1_Mon
+ SERIES_NAME Dv1ESg4_Ann
+ SERIES_NAME Dv1ESg4_Mon
+ SERIES_NAME Dv2AGst_Ann
+ SERIES_NAME Dv2AGst_Mon
+ SERIES_NAME Dv2ASg1_Ann
+ SERIES_NAME Dv2ASg1_Mon
+ SERIES_NAME Dv2BSg1_Ann
+ SERIES_NAME Dv2BSg1_Mon
+ SERIES_NAME Dv2ESg4_Ann
+ SERIES_NAME Dv2ESg4_Mon
+ SERIES_NAME Dv3AGst_Ann
+ SERIES_NAME Dv3AGst_Mon
+ SERIES_NAME Dv3ASg1_Ann
+ SERIES_NAME Dv3ASg1_Mon
+ SERIES_NAME Dv3BSg1_Ann
+ SERIES_NAME Dv3BSg1_Mon
+ SERIES_NAME Dv3ESg4_Ann
+ SERIES_NAME Dv3ESg4_Mon
+ SERIES_NAME Dv4AGst_Ann
+ SERIES_NAME Dv4AGst_Mon
+ SERIES_NAME Dv4ASg1_Ann
+ SERIES_NAME Dv4ASg1_Mon
+ SERIES_NAME Dv4BSg1_Ann
+ SERIES_NAME Dv4BSg1_Mon
+ SERIES_NAME Dv4ESg4_Ann
+ SERIES_NAME Dv4ESg4_Mon
+ SERIES_NAME Drn1_Ann
+ SERIES_NAME Drn1_Mon
+ SERIES_NAME Drn2_Ann
+ SERIES_NAME Drn2_Mon
+ SERIES_NAME Drn3_Ann
+ SERIES_NAME Drn3_Mon
+ SERIES_NAME RsVlAF_mnmon
+ SERIES_NAME RsVAF_monmn
+ SERIES_NAME ResEvapTot
+ SERIES_NAME RsEAF_mnmon
+ SERIES_NAME ResgwinTot
+ SERIES_NAME RsgiAFmnmon
+ SERIES_NAME ResgwoutTot
+ SERIES_NAME RsgoAFmnmon
+ SERIES_NAME Res_Rls_Ann
+ SERIES_NAME Res_Rls_Mon
+ SERIES_NAME RvafDv1_Ann
+ SERIES_NAME RvafDv1_Mon
+ SERIES_NAME RvafDv2_Ann
+ SERIES_NAME RvafDv2_Mon
+ SERIES_NAME RvafDv3_Ann
+ SERIES_NAME RvafDv3_Mon
+ SERIES_NAME RvafDv4_Ann
+ SERIES_NAME RvafDv4_Mon
+ SERIES_NAME RvAD3Rt_Ann
+ SERIES_NAME RvAD3Rt_Mon
+ SERIES_NAME RvAD1Cn_Ann
+ SERIES_NAME RvAD1Cn_Mon
+ SERIES_NAME RvAD2Cn_Ann
+ SERIES_NAME RvAD2Cn_Mon
+ SERIES_NAME RvAD3Cn_Ann
+ SERIES_NAME RvAD3Cn_Mon
+ SERIES_NAME RvACnTr_Ann
+ SERIES_NAME RvACnTr_Mon
+ SERIES_NAME RvBDv2_Ann
+ SERIES_NAME RvBDv2_Mon
+ SERIES_NAME RvBDv3_Ann
+ SERIES_NAME RvBDv3_Mon
+ SERIES_NAME RvBDv4_Ann
+ SERIES_NAME RvBDv4_Mon
+ SERIES_NAME RvBCD1_Ann
+ SERIES_NAME RvBCD1_Mon
+ SERIES_NAME RvBCD2_Ann
+ SERIES_NAME RvBCD2_Mon
+ SERIES_NAME RvMdEx_Ann
+ SERIES_NAME RvMdEx_Mon
+ SERIES_NAME Spill_Ann
+ SERIES_NAME Spill_Mon
+ SERIES_NAME TrbBfCn_Ann
+ SERIES_NAME TrbBfCn_Mon
+END LIST_OUTPUT
+
+# *** Diversion 1 ***
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv1_EndSg1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv1_EndSg1_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv1_StrtSg1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv1_Seg1_Strt_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv1_EndSg4_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv1_EndSg4_raw
+END LIST_OUTPUT
+
+# *** Diversion 2 ***
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv2_EndSg1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv2_EndSg1_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv2_StrtSg1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv2_BegSg1_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv2_EndSg4_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv2_EndSg4_raw
+END LIST_OUTPUT
+
+# *** Diversion 3 ***
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv3_EndSg1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv3_EndSg1_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv3_StrtSg1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv3_BegSg1_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv3_EndSg4_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv3_EndSg4_raw
+END LIST_OUTPUT
+
+# *** Diversion 4 ***
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv4_EndSg1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv4_EndSg1_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv4_StrtSg1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv4_BegSg1_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Dv4_EndSg4_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Dv4_EndSg4_raw
+END LIST_OUTPUT
+
+# *** Done with diversions ***
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Drn1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Drn1_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Drn2_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Drn2_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Drn3_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Drn3_raw
+END LIST_OUTPUT
+
+# *** Reservoir Items ***
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\ResVol_acft.txt
+ SERIES_FORMAT long
+ SERIES_NAME ResVol_acft_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\ResEvap_acft.txt
+ SERIES_FORMAT long
+ SERIES_NAME ResEvap_acft_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\ResGWin_acft.txt
+ SERIES_FORMAT long
+ SERIES_NAME res_gwin_acft_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\ResGWout_acft.txt
+ SERIES_FORMAT long
+ SERIES_NAME res_gwout_acft_raw
+END LIST_OUTPUT
+
+# *** River Items ***
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Res_Rels_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Res_Rels_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvAft_Dv1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME RvAft_Dv1_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvAft_Dv2_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME RvAft_Dv2_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvAft_Dv3_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME RvAft_Dv3_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvAft_Dv4_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME RvAft_Dv4_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvAft_Dv3Ret_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME RvAft_D3Rt_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvAft_Cnfl_Drn1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME RvAf_CDr1_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvAft_Cnfl_Drn2_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME RvAf_CDr2_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvAft_Cnfl_Drn3_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME RvAf_CDr3_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvAft_Cnfl_Trib_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME RvAf_CTrb_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvBfr_Div2_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Rv_BfrDv2_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvBfr_Div3_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Rv_BfrDv3_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvBfr_Div4_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Rv_BfrDv4_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvBfr_Cnfl_Drn1_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Rv_BCfDn1_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\RvBfr_Cnfl_Drn2_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Rv_BCfDn2_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Riv_Model_Exit_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Rv_Mod_Ex_cfs_raw
+END LIST_OUTPUT
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE .\tsproc_out\Trib_Model_BfCnfl_cfs.txt
+ SERIES_FORMAT long
+ SERIES_NAME Tb_BfCnfl_cfs_raw
+END LIST_OUTPUT
+
+
+
+

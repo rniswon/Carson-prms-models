@@ -1,0 +1,117 @@
+
+Tue Sep 11 2018 16:49: processing information contained in TSPROC input file tsproc_hist.in....
+
+ Processing SETTINGS block....
+    context pest_prep
+    DATE_FORMAT mm/dd/yyyy
+    Processing of SETTINGS block complete.
+
+ Processing GET_MUL_SERIES_SSF block....
+    context all
+    FILE .\WstFrk_Obs_sca1.txt
+    DATE_1 10/01/2000
+    TIME_1 00:00:00
+    DATE_2 09/30/2015
+    TIME_2 00:00:00
+    SITE wf1
+    NEW_SERIES_NAME wstfrk_sca1_obs
+    Reading site sample file .\WstFrk_Obs_sca1.txt....
+    Series "wstfrk_sca1_obs" successfully imported from file .\WstFrk_Obs_sca1.txt
+
+ Processing GET_MUL_SERIES_STATVAR block....
+    context all
+    FILE .\W_fk_hist_with_sca_nsubs.dat
+    VARIABLE_NAME subinc_snowcov
+    LOCATION_ID 1
+    NEW_SERIES_NAME w_fk_hist_sca1_sim
+    DATE_1 10/01/2000
+    TIME_1 00:00:00
+    DATE_2 09/30/2015
+    TIME_2 00:00:00
+    Reading STATVAR file .\W_fk_hist_with_sca_nsubs.dat....
+
+'29'
+
+'basin_gwflow_cfs 1'
+
+'basin_sroff_cfs 1'
+
+'basin_ssflow_cfs 1'
+
+'basin_cfs 1'
+
+'basin_potet 1'
+
+'basin_ppt 1'
+
+'basin_snow 1'
+
+'swrad 7194'
+
+'basin_snowdepth 1'
+
+'basin_ssflow_cfs 1'
+
+'basin_stflow_out 1'
+
+'gwres_flow 13288'
+
+'basin_pweqv 1'
+
+'tmaxf 12966'
+
+'tmaxf 10667'
+
+'tmaxf 1554'
+
+'pk_depth 10667'
+
+'pk_depth 1554'
+
+'pkwater_equiv 10667'
+
+'pkwater_equiv 1554'
+
+'hru_ppt 10667'
+
+'hru_ppt 1554'
+
+'basin_dunnian 1'
+
+'hru_ppt 5717'
+
+'tminf 10667'
+
+'tminf 1554'
+
+'subinc_snowcov 1'
+
+'subinc_snowcov 2'
+
+'subinc_snowcov 3'
+    Series "w_fk_hist_sca1_sim" successfully imported from file .\W_fk_hist_with_sca_nsubs.dat
+
+ Processing SERIES_COMPARE block....
+    context all
+    SERIES_NAME_SIM w_fk_hist_sca1_sim
+    SERIES_NAME_OBS wstfrk_sca1_obs
+    NEW_C_TABLE_NAME compare_series
+    BIAS yes
+    STANDARD_ERROR yes
+    RELATIVE_BIAS yes
+    RELATIVE_STANDARD_ERROR yes
+    NASH_SUTCLIFFE yes
+    COEFFICIENT_OF_EFFICIENCY yes
+    INDEX_OF_AGREEMENT yes
+    VOLUMETRIC_EFFICIENCY yes
+    EXPONENT 1
+    Comparison statistics stored in C_TABLE "compare_series".
+
+ Processing LIST_OUTPUT block....
+    context all
+    FILE WstFrk_hist_Output_sca1.txt
+    C_TABLE_NAME compare_series
+    Writing output file WstFrk_hist_Output_sca1.txt....
+    File WstFrk_hist_Output_sca1.txt written ok.
+
+ - no more blocks to process.

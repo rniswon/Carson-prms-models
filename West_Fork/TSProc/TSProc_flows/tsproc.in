@@ -1,0 +1,54 @@
+START SETTINGS
+#CONTEXT model_run
+CONTEXT pest_prep
+DATE_FORMAT mm/dd/yyyy
+END SETTINGS
+
+####################################################################
+# Observed streamflows are read from an SSF file.
+####################################################################
+START GET_MUL_SERIES_SSF
+ CONTEXT all
+ FILE .\WstFrk_obs_streamflow.txt
+ DATE_1 04/19/1989
+ TIME_1 00:00:00
+ DATE_2 03/11/2015
+ TIME_2 00:00:00
+ SITE 10310000
+ NEW_SERIES_NAME WstFrk_Daily_obs
+END GET_MUL_SERIES_SSF
+
+START GET_MUL_SERIES_STATVAR
+ CONTEXT all
+ FILE .\WstFrk_statvar_sca.dat
+ VARIABLE_NAME basin_cfs
+ LOCATION_ID 1
+ NEW_SERIES_NAME WstFrk_Daily_sim
+ DATE_1 04/19/1989
+ TIME_1 00:00:00
+ DATE_2 03/11/2015
+ TIME_2 00:00:00
+END GET_MUL_SERIES_STATVAR
+
+START SERIES_COMPARE
+ CONTEXT all
+ SERIES_NAME_SIM WstFrk_Daily_sim
+ SERIES_NAME_OBS WstFrk_Daily_obs
+ NEW_C_TABLE_NAME compare_series
+ BIAS                        yes
+ STANDARD_ERROR              yes
+ RELATIVE_BIAS               yes
+ RELATIVE_STANDARD_ERROR     yes
+ NASH_SUTCLIFFE              yes
+ COEFFICIENT_OF_EFFICIENCY   yes
+ INDEX_OF_AGREEMENT          yes
+ VOLUMETRIC_EFFICIENCY       yes
+ EXPONENT 1
+END SERIES_COMPARE
+ 
+START LIST_OUTPUT
+ CONTEXT all
+ FILE WstFrk_Processed_Output_streamflow.txt
+ C_TABLE_NAME compare_series
+END LIST_OUTPUT
+

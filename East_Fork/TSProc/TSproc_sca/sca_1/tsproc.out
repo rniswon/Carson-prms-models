@@ -1,0 +1,151 @@
+
+Tue Sep 11 2018 13:57: processing information contained in TSPROC input file tsproc.in....
+
+ Processing SETTINGS block....
+    context pest_prep
+    DATE_FORMAT mm/dd/yyyy
+    Processing of SETTINGS block complete.
+
+ Processing GET_MUL_SERIES_SSF block....
+    context all
+    FILE .\EastFk_obs_sca1.txt
+    DATE_1 10/01/2000
+    TIME_1 00:00:00
+    DATE_2 09/30/2015
+    TIME_2 00:00:00
+    SITE ef1
+    NEW_SERIES_NAME eastfork_sca1_obs
+    Reading site sample file .\EastFk_obs_sca1.txt....
+    Series "eastfork_sca1_obs" successfully imported from file .\EastFk_obs_sca1.txt
+
+ Processing GET_MUL_SERIES_STATVAR block....
+    context all
+    FILE .\statvar_v3.2.dat
+    VARIABLE_NAME subinc_snowcov
+    LOCATION_ID 1
+    NEW_SERIES_NAME e_fk_v3.2_sca1_sim
+    DATE_1 10/01/2000
+    TIME_1 00:00:00
+    DATE_2 09/30/2015
+    TIME_2 00:00:00
+    Reading STATVAR file .\statvar_v3.2.dat....
+
+'46'
+
+'basin_gwflow_cfs 1'
+
+'basin_sroff_cfs 1'
+
+'basin_dunnian 1'
+
+'basin_cfs 1'
+
+'basin_ssflow_cfs 1'
+
+'basin_ppt 1'
+
+'basin_snow 1'
+
+'swrad 12730'
+
+'basin_pweqv 1'
+
+'sub_cfs 4'
+
+'sub_cfs 1'
+
+'tmaxf 29082'
+
+'tmaxf 33861'
+
+'tmaxf 25668'
+
+'pk_depth 33861'
+
+'pk_depth 25668'
+
+'pkwater_equiv 33861'
+
+'pkwater_equiv 25668'
+
+'hru_ppt 33861'
+
+'hru_ppt 25668'
+
+'pkwater_equiv 43036'
+
+'pkwater_equiv 26428'
+
+'pkwater_equiv 18255'
+
+'pkwater_equiv 49853'
+
+'hru_ppt 43036'
+
+'hru_ppt 26428'
+
+'hru_ppt 18255'
+
+'hru_ppt 49853'
+
+'tminf 33861'
+
+'tminf 25668'
+
+'hru_ppt 25886'
+
+'pkwater_equiv 25886'
+
+'basin_actet 1'
+
+'basin_soil_moist 1'
+
+'subinc_snowcov 1'
+
+'subinc_snowcov 2'
+
+'subinc_snowcov 3'
+
+'subinc_snowcov 4'
+
+'subinc_snowcov 5'
+
+'subinc_snowcov 6'
+
+'subinc_snowmelt 1'
+
+'subinc_snowmelt 2'
+
+'subinc_snowmelt 3'
+
+'subinc_snowmelt 4'
+
+'subinc_snowmelt 5'
+
+'subinc_snowmelt 6'
+    Series "e_fk_v3.2_sca1_sim" successfully imported from file .\statvar_v3.2.dat
+
+ Processing SERIES_COMPARE block....
+    context all
+    SERIES_NAME_SIM e_fk_v3.2_sca1_sim
+    SERIES_NAME_OBS eastfork_sca1_obs
+    NEW_C_TABLE_NAME compare_series
+    BIAS yes
+    STANDARD_ERROR yes
+    RELATIVE_BIAS yes
+    RELATIVE_STANDARD_ERROR yes
+    NASH_SUTCLIFFE yes
+    COEFFICIENT_OF_EFFICIENCY yes
+    INDEX_OF_AGREEMENT yes
+    VOLUMETRIC_EFFICIENCY yes
+    EXPONENT 1
+    Comparison statistics stored in C_TABLE "compare_series".
+
+ Processing LIST_OUTPUT block....
+    context all
+    FILE E_fk_v3.2sca1_Output.txt
+    C_TABLE_NAME compare_series
+    Writing output file E_fk_v3.2sca1_Output.txt....
+    File E_fk_v3.2sca1_Output.txt written ok.
+
+ - no more blocks to process.

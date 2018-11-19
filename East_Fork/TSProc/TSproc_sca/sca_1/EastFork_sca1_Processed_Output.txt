@@ -1,0 +1,17 @@
+
+ C_TABLE "compare_series" ---->
+    Observation time series name:                     "eastfork_sca1_obs"
+    Simulation time series name:                      "eastfork_sca1_sim"
+    Beginning date of series comparison:              10/01/2000
+    Beginning time of series comparison:              00:00:00
+    Finishing date of series comparison:              09/30/2015
+    Finishing time of series comparison:              00:00:00
+    Number of series terms in this interval:          5478
+    Bias:                                             -1.0833272E-03
+    Standard error:                                    0.1693800    
+    Relative bias:                                    -2.4825626E-03
+    Relative standard error:                           0.3888855    
+    Nash-Sutcliffe coefficient:                        0.8487681    
+    Coefficient of efficiency:                         0.7921793    
+    Index of agreement:                                0.8947007    
+    Volumetric efficiency:                             0.8037264    

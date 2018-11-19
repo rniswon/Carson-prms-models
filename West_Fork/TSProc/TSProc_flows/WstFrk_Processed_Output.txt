@@ -1,0 +1,17 @@
+
+ C_TABLE "compare_series" ---->
+    Observation time series name:                     "wstfrk_daily_obs"
+    Simulation time series name:                      "wstfrk_daily_sim"
+    Beginning date of series comparison:              04/19/1989
+    Beginning time of series comparison:              00:00:00
+    Finishing date of series comparison:              03/11/2015
+    Finishing time of series comparison:              00:00:00
+    Number of series terms in this interval:          9458
+    Bias:                                              0.7594102    
+    Standard error:                                     155.4516    
+    Relative bias:                                     8.0519887E-03
+    Relative standard error:                           0.9735883    
+    Nash-Sutcliffe coefficient:                        5.2125745E-02
+    Coefficient of efficiency:                         0.2561508    
+    Index of agreement:                                0.6984091    
+    Volumetric efficiency:                             0.2706288    

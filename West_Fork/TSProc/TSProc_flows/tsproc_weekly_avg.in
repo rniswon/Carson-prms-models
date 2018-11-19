@@ -1,0 +1,103 @@
+START SETTINGS
+#CONTEXT model_run
+CONTEXT pest_prep
+DATE_FORMAT mm/dd/yyyy
+END SETTINGS
+
+####################################################################
+# Observed streamflows are read from an SSF file.
+####################################################################
+START GET_MUL_SERIES_SSF
+ CONTEXT all
+ FILE .\WstFrk_obs.txt
+ DATE_1 04/19/1989
+ TIME_1 00:00:00
+ DATE_2 03/11/2015
+ TIME_2 00:00:00
+ SITE 10310000
+ NEW_SERIES_NAME WstFrk_Daily_obs
+END GET_MUL_SERIES_SSF
+
+START GET_MUL_SERIES_STATVAR
+ CONTEXT all
+ FILE .\WstFrk_statvar.dat
+ VARIABLE_NAME basin_cfs
+ LOCATION_ID 1
+ NEW_SERIES_NAME WstFrk_Daily_sim
+ DATE_1 04/19/1989
+ TIME_1 00:00:00
+ DATE_2 03/11/2015
+ TIME_2 00:00:00
+END GET_MUL_SERIES_STATVAR
+
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME WstFrk_Daily_obs
+ NEW_V_TABLE_NAME WstFrk_WV_obs
+ DATE_FILE "weekly_avg.dat"
+ FLOW_TIME_UNITS day
+ FACTOR .142857   #1/7
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ V_TABLE_NAME WstFrk_WV_obs
+ NEW_SERIES_NAME wf_week_obs
+ TIME_ABSCISSA end
+END V_TABLE_TO_SERIES 
+
+START VOLUME_CALCULATION
+ CONTEXT all
+ SERIES_NAME WstFrk_Daily_sim
+ NEW_V_TABLE_NAME WstFrk_WV_sim
+ DATE_FILE "weekly_avg.dat"
+ FLOW_TIME_UNITS day
+ FACTOR .142857   #1/7
+END VOLUME_CALCULATION
+
+START V_TABLE_TO_SERIES
+ CONTEXT all
+ V_TABLE_NAME WstFrk_WV_sim
+ NEW_SERIES_NAME wf_week_sim
+ TIME_ABSCISSA end
+END V_TABLE_TO_SERIES 
+
+START SERIES_COMPARE
+ CONTEXT all
+ SERIES_NAME_SIM WstFrk_Daily_sim
+ SERIES_NAME_OBS WstFrk_Daily_obs
+ NEW_C_TABLE_NAME compare_series
+ BIAS                        yes
+ STANDARD_ERROR              yes
+ RELATIVE_BIAS               yes
+ RELATIVE_STANDARD_ERROR     yes
+ NASH_SUTCLIFFE              yes
+ COEFFICIENT_OF_EFFICIENCY   yes
+ INDEX_OF_AGREEMENT          yes
+ VOLUMETRIC_EFFICIENCY       yes
+ EXPONENT 1
+END SERIES_COMPARE
+ 
+ START SERIES_COMPARE
+ CONTEXT all
+ SERIES_NAME_SIM wf_week_sim
+ SERIES_NAME_OBS wf_week_obs
+ NEW_C_TABLE_NAME compare_wk
+ BIAS                        yes
+ STANDARD_ERROR              yes
+ RELATIVE_BIAS               yes
+ RELATIVE_STANDARD_ERROR     yes
+ NASH_SUTCLIFFE              yes
+ COEFFICIENT_OF_EFFICIENCY   yes
+ INDEX_OF_AGREEMENT          yes
+ VOLUMETRIC_EFFICIENCY       yes
+ EXPONENT 1
+END SERIES_COMPARE
+
+START LIST_OUTPUT
+ CONTEXT all
+ FILE WstFrk_Processed_Output.txt
+ C_TABLE_NAME compare_series
+ C_TABLE_NAME compare_wk
+END LIST_OUTPUT
+

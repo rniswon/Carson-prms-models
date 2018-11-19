@@ -1,0 +1,127 @@
+
+Fri Oct 19 2018 13:11: processing information contained in TSPROC input file tsproc.in....
+
+ Processing SETTINGS block....
+    context pest_prep
+    DATE_FORMAT mm/dd/yyyy
+    Processing of SETTINGS block complete.
+
+ Processing GET_MUL_SERIES_SSF block....
+    context all
+    FILE .\EastFk_obs.txt
+    DATE_1 10/01/1986
+    TIME_1 00:00:00
+    DATE_2 03/11/2015
+    TIME_2 00:00:00
+    SITE 10309000
+    NEW_SERIES_NAME eastfork_daily_obs
+    Reading site sample file .\EastFk_obs.txt....
+    Series "eastfork_daily_obs" successfully imported from file .\EastFk_obs.txt
+
+ Processing GET_MUL_SERIES_STATVAR block....
+    context all
+    FILE .\statvar_eastfk.dat
+    VARIABLE_NAME basin_cfs
+    LOCATION_ID 1
+    NEW_SERIES_NAME eastfork_daily_sim
+    DATE_1 10/01/1986
+    TIME_1 00:00:00
+    DATE_2 03/11/2015
+    TIME_2 00:00:00
+    Reading STATVAR file .\statvar_eastfk.dat....
+
+'34'
+
+'basin_gwflow_cfs 1'
+
+'basin_sroff_cfs 1'
+
+'basin_dunnian 1'
+
+'basin_cfs 1'
+
+'basin_ssflow_cfs 1'
+
+'basin_ppt 1'
+
+'basin_snow 1'
+
+'swrad 12730'
+
+'basin_pweqv 1'
+
+'sub_cfs 4'
+
+'sub_cfs 1'
+
+'tmaxf 29082'
+
+'tmaxf 33861'
+
+'tmaxf 25668'
+
+'pk_depth 33861'
+
+'pk_depth 25668'
+
+'pkwater_equiv 33861'
+
+'pkwater_equiv 25668'
+
+'hru_ppt 33861'
+
+'hru_ppt 25668'
+
+'pkwater_equiv 43036'
+
+'pkwater_equiv 26428'
+
+'pkwater_equiv 18255'
+
+'pkwater_equiv 49853'
+
+'hru_ppt 43036'
+
+'hru_ppt 26428'
+
+'hru_ppt 18255'
+
+'hru_ppt 49853'
+
+'tminf 33861'
+
+'tminf 25668'
+
+'hru_ppt 25886'
+
+'pkwater_equiv 25886'
+
+'basin_actet 1'
+
+'basin_soil_moist 1'
+    Series "eastfork_daily_sim" successfully imported from file .\statvar_eastfk.dat
+
+ Processing SERIES_COMPARE block....
+    context all
+    SERIES_NAME_SIM eastfork_daily_sim
+    SERIES_NAME_OBS eastfork_daily_obs
+    NEW_C_TABLE_NAME compare_series
+    BIAS yes
+    STANDARD_ERROR yes
+    RELATIVE_BIAS yes
+    RELATIVE_STANDARD_ERROR yes
+    NASH_SUTCLIFFE yes
+    COEFFICIENT_OF_EFFICIENCY yes
+    INDEX_OF_AGREEMENT yes
+    VOLUMETRIC_EFFICIENCY yes
+    EXPONENT 1
+    Comparison statistics stored in C_TABLE "compare_series".
+
+ Processing LIST_OUTPUT block....
+    context all
+    FILE EastFork_Processed_Output.txt
+    C_TABLE_NAME compare_series
+    Writing output file EastFork_Processed_Output.txt....
+    File EastFork_Processed_Output.txt written ok.
+
+ - no more blocks to process.
