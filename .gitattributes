@@ -2,4 +2,6 @@
 *.control filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.xlsx filter=lfs diff=lfs merge=lfs -text
-
+*.csv filter=lfs diff=lfs merge=lfs -text
+*.tpl filter=lfs diff=lfs merge=lfs -text
+*.pst filter=lfs diff=lfs merge=lfs -text
