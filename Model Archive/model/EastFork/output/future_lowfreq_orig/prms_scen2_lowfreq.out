@@ -1,0 +1,102 @@
+
+               Precipitation-Runoff Modeling System (PRMS)
+                       Version 4.0.3 06/01/2017
+
+        Process            Available Modules
+--------------------------------------------------------------------
+  Basin Definition: basin
+    Cascading Flow: cascade
+  Time Series Data: obs
+   Potet Solar Rad: soltab
+  Temperature Dist: temp_1sta, temp_laps, temp_dist2, climate_hru
+       Precip Dist: precip_1sta, precip_laps, precip_dist2,
+                    climate_hru
+Temp & Precip Dist: xyz_dist, ide_dist
+    Solar Rad Dist: ccsolrad, ddsolrad, climate_hru
+Transpiration Dist: transp_tindex, climate_hru, transp_frost
+      Potential ET: potet_hamon, potet_jh, potet_pan, climate_hru,
+                    potet_hs, potet_pt, potet_pm, potet_pm_sta
+      Interception: intcp
+     Snow Dynamics: snowcomp
+    Surface Runoff: srunoff_smidx, srunoff_carea
+         Soil Zone: soilzone
+       Groundwater: gwflow
+Streamflow Routing: strmflow, strmflow_in_out, muskingum
+    Output Summary: basin_sum, subbasin, map_results, nhru_summary
+                    nsub_summary, basin_summary, water_balance
+     Preprocessing: write_climate_hru, frost_date
+--------------------------------------------------------------------
+
+
+    Active modules listed in the order in which they are called
+
+        Process                   Module                Version Date
+====================================================================
+GSFLOW Computation Order       gsflow_prms                2017-11-14
+Basin Definition               basin                      2018-01-23
+Cascading Flow                 cascade                    2017-11-08
+Common States and Fluxes       climateflow                2018-01-23
+Potential Solar Radiation      soltab                     2016-09-09
+PRMS Set Time Variables        prms_time                  2015-03-31
+Time Series Data               obs                        2017-09-27
+Temperature Distribution       temp_laps                  2016-05-12
+Precipitation Distribution     precip_1sta                2016-10-21
+Solar Radiation Distribution   ddsolrad                   2016-11-03
+Transpiration Distribution     transp_tindex              2015-01-06
+Potential Evapotranspiration   potet_jh                   2016-05-10
+Canopy Interception            intcp                      2017-09-27
+Snow Dynamics                  snowcomp                   2018-02-06
+Surface Runoff                 srunoff_smidx              2017-11-08
+Soil Zone Computations         soilzone                   2018-01-24
+Groundwater                    gwflow                     2018-01-18
+Streamflow Routing             strmflow                   2014-12-02
+Summary                        basin_sum                  2017-10-21
+Output Summary                 subbasin                   2017-11-15
+====================================================================
+
+Using Control File: eastfork_scen2_lofreq.control
+
+Using Parameter File: east_fork.param
+
+
+Start time: 2053/10/01 00:00:00
+End time:   2076/09/29 00:00:00
+
+
+Model domain area:       500305.54    Active basin area:    228756.94
+Fraction impervious:        0.0017    Fraction pervious:       0.9983
+
+
+
+
+   Year Month Day   Precip     ET    Storage S-Runoff M-Runoff
+                  (inches) (inches) (inches) (inches) (inches)
+ -------------------------------------------------------------
+ initial                               0.144
+   2054             42.868   26.451    1.227   15.334    0.038
+   2055             42.868   26.507    1.239   16.348    0.038
+   2056             42.867   26.442    1.228   16.437    0.038
+   2057             42.868   26.714    1.251   16.130    0.038
+   2058             55.461   29.468    1.336   25.908    0.038
+   2059             57.611   30.685    1.583   26.680    0.038
+   2060             23.449   19.207    0.580    5.245    0.038
+   2061             33.188   23.796    1.047    8.924    0.038
+   2062             35.298   25.121    0.981   10.244    0.038
+   2063             21.017   17.799    0.511    3.689    0.038
+   2064             42.017   28.701    1.977   11.850    0.038
+   2065             41.148   26.843    1.112   15.169    0.038
+   2066             40.915   26.852    1.057   14.119    0.038
+   2067             22.986   18.632    1.054    4.357    0.038
+   2068             41.113   25.719    1.184   15.263    0.038
+   2069             26.575   19.479    0.690    7.590    0.038
+   2070             38.279   25.933    0.922   12.115    0.038
+   2071             48.994   30.474    1.315   18.127    0.038
+   2072             44.544   24.565    1.158   20.135    0.038
+   2073             39.305   27.312    1.079   12.073    0.038
+   2074             53.617   29.164    1.389   24.143    0.038
+   2075             36.054   24.992    1.037   11.415    0.038
+ *************************************************************
+ Total for run     914.781  589.068    1.805  324.051    0.874
+ *************************************************************
+Execution elapsed time    5 minutes 18.68 seconds
+

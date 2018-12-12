@@ -1,0 +1,11 @@
+usgs model ref for Upper Carson West Fork PRMS
+
+xul 785659.060          # upper left x-coordinate
+yul 14126731.520        # upper left y-coordinate
+rotation 0              # model grid rotation (degrees)
+length_units feet       # model length units (feet, meters, etc.)
+time_units days         # model time units (days, years, etc.)
+start_date 10/01/1980   # state date of the model
+start_time 00:00:00     # start time of the model
+model GSFLOW-PRMS mode  # model type
+epsg  ??                # epsg code 

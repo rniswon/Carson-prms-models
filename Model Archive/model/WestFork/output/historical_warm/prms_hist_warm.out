@@ -1,0 +1,116 @@
+
+               Precipitation-Runoff Modeling System (PRMS)
+                       Version 4.0.3 06/01/2017
+
+        Process            Available Modules
+--------------------------------------------------------------------
+  Basin Definition: basin
+    Cascading Flow: cascade
+  Time Series Data: obs
+   Potet Solar Rad: soltab
+  Temperature Dist: temp_1sta, temp_laps, temp_dist2, climate_hru
+       Precip Dist: precip_1sta, precip_laps, precip_dist2,
+                    climate_hru
+Temp & Precip Dist: xyz_dist, ide_dist
+    Solar Rad Dist: ccsolrad, ddsolrad, climate_hru
+Transpiration Dist: transp_tindex, climate_hru, transp_frost
+      Potential ET: potet_hamon, potet_jh, potet_pan, climate_hru,
+                    potet_hs, potet_pt, potet_pm, potet_pm_sta
+      Interception: intcp
+     Snow Dynamics: snowcomp
+    Surface Runoff: srunoff_smidx, srunoff_carea
+         Soil Zone: soilzone
+       Groundwater: gwflow
+Streamflow Routing: strmflow, strmflow_in_out, muskingum
+    Output Summary: basin_sum, subbasin, map_results, nhru_summary
+                    nsub_summary, basin_summary, water_balance
+     Preprocessing: write_climate_hru, frost_date
+--------------------------------------------------------------------
+
+
+    Active modules listed in the order in which they are called
+
+        Process                   Module                Version Date
+====================================================================
+GSFLOW Computation Order       gsflow_prms                2017-11-14
+Basin Definition               basin                      2018-01-23
+Cascading Flow                 cascade                    2017-11-08
+Common States and Fluxes       climateflow                2018-01-23
+Potential Solar Radiation      soltab                     2016-09-09
+PRMS Set Time Variables        prms_time                  2015-03-31
+Time Series Data               obs                        2017-09-27
+Temperature Distribution       temp_laps                  2016-05-12
+Precipitation Distribution     precip_1sta                2016-10-21
+Solar Radiation Distribution   ddsolrad                   2016-11-03
+Transpiration Distribution     transp_tindex              2015-01-06
+Potential Evapotranspiration   potet_jh                   2016-05-10
+Canopy Interception            intcp                      2017-09-27
+Snow Dynamics                  snowcomp                   2018-02-06
+Surface Runoff                 srunoff_smidx              2017-11-08
+Soil Zone Computations         soilzone                   2018-01-24
+Groundwater                    gwflow                     2018-01-18
+Streamflow Routing             strmflow                   2014-12-02
+Summary                        basin_sum                  2017-10-21
+Output Summary                 subbasin                   2017-11-15
+====================================================================
+
+Using Control File: westfork_hist_warm.control
+
+Using Parameter File: west_fork.param
+
+
+Start time: 1980/10/01 00:00:00
+End time:   2015/09/30 00:00:00
+
+
+Model domain area:        92277.77    Active basin area:     41576.39
+Fraction impervious:        0.0040    Fraction pervious:       0.9915
+Lake area:                187.5000    Fraction lakes:          0.0045
+
+
+
+
+   Year Month Day   Precip     ET    Storage S-Runoff M-Runoff
+                  (inches) (inches) (inches) (inches) (inches)
+ -------------------------------------------------------------
+ initial                               1.509
+   1981             32.810   22.468    2.360    9.069   12.570
+   1982             76.936   23.235    9.640   44.677   39.492
+   1983             83.496   25.077   11.644   54.396   50.910
+   1984             49.806   24.145    4.623   31.640   34.051
+   1985             39.745   20.469    4.821   18.494   17.403
+   1986             50.684   21.924    5.650   26.935   35.072
+   1987             22.705   19.607    2.441    6.105   10.617
+   1988             28.239   20.271    2.626    7.495    8.435
+   1989             44.020   22.588    6.154   17.185   18.311
+   1990             30.726   23.940    3.819    8.808   10.419
+   1991             31.546   22.283    3.741    8.954   11.389
+   1992             30.377   20.934    3.172    9.667    8.212
+   1993             54.187   23.461    4.665   28.040   27.124
+   1994             27.561   20.341    3.327    8.267    8.197
+   1995             72.961   25.148    6.799   42.581   46.428
+   1996             48.528   23.251    5.279   25.823   29.754
+   1997             53.851   20.817    4.670   32.506   38.093
+   1998             56.530   23.145    7.920   28.975   32.887
+   1999             43.350   21.947    5.366   23.133   26.643
+   2000             42.891   23.194    5.150   19.174   17.703
+   2001             29.781   19.166    3.965   11.399   10.153
+   2002             35.754   19.856    4.199   15.090   15.614
+   2003             38.338   21.374    4.937   15.640   18.732
+   2004             33.401   18.384    3.943   15.459   14.242
+   2005             51.822   24.153    5.880   24.724   23.451
+   2006             54.188   22.010    5.628   31.241   32.681
+   2007             26.573   20.466    3.594    7.904   10.178
+   2008             29.535   19.733    3.497    9.514   11.289
+   2009             39.989   22.379    4.589   15.875   16.259
+   2010             41.310   22.454    5.160   17.579   19.603
+   2011             66.273   28.398    7.301   34.379   34.559
+   2012             23.848   19.221    3.714    7.984   11.993
+   2013             29.024   19.395    3.654    9.358   13.763
+   2014             30.531   22.523    4.601    6.785    8.791
+   2015             25.936   23.442    2.997    3.955    6.373
+ *************************************************************
+ Total for run    1477.251  771.198    2.997  678.807  731.388
+ *************************************************************
+Execution elapsed time    1 minutes  6.24 seconds
+
