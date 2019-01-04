@@ -14,3 +14,5 @@ Historical, Historical with 4.3C warming, Future high and low frequency
 Modelgeoref - usgs model references (two .txt files)
 readme.txt
 Run_Carson_PRMS.bat - Batch file that runs each scenario for each model and stores the output within the Model folder structure
+
+*** still need to add delta T scenarios to archive (will need to adapt the batch file to run these once the exe from Eric is set up)
