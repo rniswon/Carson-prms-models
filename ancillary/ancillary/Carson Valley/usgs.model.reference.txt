@@ -1,0 +1,11 @@
+usgs model ref for Carson Valley MODSIM-GSFLOW model
+
+XLLCORNER 829109.06          # lower left x-coordinate
+YLLCORNER 14075581.52        # lower left y-coordinate
+rotation 0                   # model grid rotation (degrees)
+length_units feet            # model length units (feet, meters, etc.)
+time_units days              # model time units (days, years, etc.)
+start_date 07/02/1979        # state date of the model
+start_time 00:00:00          # start time of the model
+model MODSIM-GSFLOW          # model type
+epsg  26911                  # epsg code 

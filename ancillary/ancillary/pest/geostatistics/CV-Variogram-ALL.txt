@@ -1,0 +1,51 @@
+STRUCTURE lay2             
+  NUGGET 0.5           
+  TRANSFORM log        
+  NUMVARIOGRAM 1       
+  VARIOGRAM var2 1.0   
+END STRUCTURE          
+VARIOGRAM var1         
+  VARTYPE 2            
+  BEARING 0            
+  A   8250.0           
+  ANISOTROPY 1.0       
+END VARIOGRAM
+
+STRUCTURE lay3            
+  NUGGET 0.5           
+  TRANSFORM log        
+  NUMVARIOGRAM 1       
+  VARIOGRAM var2 1.0   
+END STRUCTURE          
+VARIOGRAM var2         
+  VARTYPE 2            
+  BEARING 0            
+  A   13200.0           
+  ANISOTROPY 1.0       
+END VARIOGRAM
+
+STRUCTURE lay4             
+  NUGGET 0.5           
+  TRANSFORM log        
+  NUMVARIOGRAM 1       
+  VARIOGRAM var3 1.0   
+END STRUCTURE          
+VARIOGRAM var3         
+  VARTYPE 2            
+  BEARING 0            
+  A   16500.0           
+  ANISOTROPY 1.0       
+END VARIOGRAM          
+
+STRUCTURE lay5             
+  NUGGET 0.5           
+  TRANSFORM log        
+  NUMVARIOGRAM 1       
+  VARIOGRAM var4 1.0   
+END STRUCTURE          
+VARIOGRAM var4         
+  VARTYPE 2            
+  BEARING 0            
+  A   24750.0           
+  ANISOTROPY 1.0       
+END VARIOGRAM

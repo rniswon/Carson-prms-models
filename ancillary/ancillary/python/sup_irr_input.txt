@@ -1,0 +1,37 @@
+#parameters for creating irr, irs, and sup files for supplemental pumping in MF
+#modnam is assumed the same for .irr, .irs, and .sup files
+confile=MSGS-hist.control
+irrfile=Carson_Valley\CV-wes-8015trans-irrigation-fracsup.txt
+regfile=tabfiles_hist\CV-regression-stream-10309000-EFKCARSONRVNRGARDNERVILLENV-19790702-20150928.txt
+
+#parameters for wr_et_sim.py and pre-processed pcpet
+icellfracfile=Carson_Valley\wr_cell_frac.txt
+firstyr=2001
+lastyr=2005
+
+#irrigation rates in ac-ft/yr
+#sweff assumed to be ratio of annsonsump/swannirr
+doystartirr=91.0
+doyendirr=274.0
+#either leave this out or make sure no MARwr.txt file exists in root
+doystartmar=30.0
+
+#flow to trigger MAR in cfs
+cumflowmaron=0
+marrate=0
+
+#supplemental GW irrigation
+#don't irrigate unless SW shortfall is <= irrdef*consumptive
+#supplemental irrigation applied from doystartsup to doyendsup (day of year, i.e. July 1 is 182)
+#need to make model respond to incremental changes in doy
+doystartsup=91
+doyendsup=274
+futurepmp=True
+
+#water rights to transfer, comma sep list
+#demand (ft/year) will be multiplied by acres and used in the demand tabfile and MODSIM file
+#efficiency (fraction) will be used to partition diverted amount to comsumptive use and recharge at effname
+transwr=056,057a
+demand=2.5
+efficiency=0.85
+effname=DCSID06

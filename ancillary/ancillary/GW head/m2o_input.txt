@@ -1,0 +1,14 @@
+CV-gridspec.txt        
+CV-wes-8015trans-obswellcoord.txt    
+CV-wes-8015trans-obslisting.txt     
+CV-wes-8015trans-headmod2obs.txt    
+../../output/output_MSGSF_hist/CV-wes-8015trans-closest-hist.bheds    
+f             
+1E+20     
+d             
+07/02/1979     
+12:00:00     
+5             
+1.             
+../../output/output_MSGSF_hist/CV-wes-8015trans-headsim.txt   
+ECHO is off.
