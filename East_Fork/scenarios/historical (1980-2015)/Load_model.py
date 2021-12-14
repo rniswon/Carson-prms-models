@@ -30,11 +30,13 @@ ncols = 217
 #plt.imshow(gs.prms.parameters.get_values('hru_subbasin').reshape(nrows,ncols))  #converts to grid
 #plt.show()
 gs.gsflow_exe = os.path.join(os.path.abspath(r".\..\..\bin"), "gsflow.exe")
+#The next line should be uncommented to rerun the model.
 #gs.run_model()
+#load PRMS output with simulated and measured streamflow
 gs.prms.get_StatVar()
 sim_stream_flow = gs.prms.stat.stat_df['basin_cfs_1'].values
 meas_stream_flow = gs.prms.stat.stat_df['runoff_2'].values
-# set dates for daily values; this date is simulation start date
+# set dates for daily values
 dates = []
 for i in range(len(sim_stream_flow)):
     dates.append(datetime.date(1980, 10, 1)+datetime.timedelta(days=i))
